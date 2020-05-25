@@ -1,42 +1,34 @@
-import styles from './lib/styles.js';
-import parse from './lib/parse.js';
+import styles from "./lib/styles.js";
+import parse from "./lib/parse.js";
 
 export const refreshFrequency = false;
-export const command = './xbar/scripts/titlebar.sh';
+export const command = "./xbar/scripts/titlebar.sh";
 
 export function render({ output, error }) {
-    if (error) {
-        return (
-            <div>
-                Something went wrong: <strong>{String(error)}</strong>
-            </div>
-        );
+    const data = parse(output);
+    if (error || !data) {
+        return <strong>{String(error)}</strong>;
     }
 
-    const windows = parse(output);
-    const focused =
-        windows !== undefined
-            ? windows.find(window => window.focused === 1)
-            : undefined;
-
+    const { windows } = data;
+    const focused = windows.find((window) => window.focused === 1);
     return (
         focused && (
             <div
                 style={{
-                    position: 'fixed',
-                    display: 'flex',
-                    width: '100%',
+                    position: "fixed",
+                    display: "flex",
+                    width: "100%",
+                    zIndex: 0,
                     color: styles.colors.dim,
                     fontFamily: styles.fontFamily,
                     fontSize: styles.fontSize,
                     lineHeight: styles.lineHeight,
-                    fontWeight: styles.fontWeight
+                    fontWeight: styles.fontWeight,
                 }}
             >
-                <div style={{ margin: 'auto' }}>{focused.title}</div>
+                <div style={{ margin: "auto" }}>{focused.title}</div>
             </div>
         )
     );
 }
-
-export default null;

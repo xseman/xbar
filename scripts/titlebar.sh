@@ -1,12 +1,12 @@
 #!/bin/bash
 
-PATH=/usr/local/bin/:$PATH
-
 WINDOWS=$(
-    yabai -m query --windows --display 1
+    /usr/local/bin/yabai -m query --windows --display 1
 )
 
 echo $(cat <<-EOF
-    $WINDOWS
+    {
+        "windows": $WINDOWS
+    }
 EOF
 )

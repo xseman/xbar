@@ -15,8 +15,10 @@
 # WIFI_STATUS=$(ifconfig en0 | grep status | cut -c 10-)
 # WIFI_SSID=$(networksetup -getairportnetwork en0 | cut -c 24-)
 
+# IP_ADDR=$(ifconfig | sed -En 's/127.0.0.1//;s/127.94.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
+
 TIME=$(date +"%H:%M")
-DATE=$(date +"%a %d.%m")
+DATE=$(date "+%A, %B %d")
 
 echo $(cat <<-EOF
 {

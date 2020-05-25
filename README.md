@@ -4,6 +4,13 @@ Simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status ba
 
 Originally forked from <https://github.com/kkga/nibar>
 
+## Features
+
+- Show workspace number & current space (one display)
+- OnClick switch spaces (interaction shortcut must be enabled)
+- Show current app name & title
+- Date and time
+
 ## Screenshot
 
 ![img](./desktop.png)
@@ -22,26 +29,27 @@ git clone https://github.com/xseman/xbar $HOME/Library/Application\ Support/Übe
 - [jq](https://github.com/stedolan/jq) — used for parsing json output and displaying the workspaces widget
   - install with homebrew: `brew install jq`
 
-## Usage
+## Refreshing widgets with yabai
 
-### Refreshing yabai workspaces widget
+Wigets `titlebar.jsx` and `spaces.jsx` aren't refreshing automatically (performance reasons).
 
-The widget `spaces.jsx` for displaying yabai workspaces aren't refreshing automatically.
-
-To refresh them add to `.config/yabai/yabairc`
-
-```sh
-yabai -m signal --add event=space_changed action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-spaces-jsx\"'"
-```
-
-### Refreshing yabai titlebar widget
-
-The widget `titlebar.jsx` for displaying title of focused window isn't refreshing automatically.
-
-To refresh it add to `.config/yabai/yabairc`
+To refresh them, you can add these lines utilizing
+[yabai's signals]([https://link](https://github.com/koekeishiya/yabai/wiki/Commands#automation-with-rules-and-signals))
+at the end of `.yabairc`:
 
 ```sh
-yabai -m signal --add event=application_front_switched action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-titlebar-jsx\"'"
+# spaces
+yabai -m signal \
+    --add event=space_changed \
+    action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-spaces-jsx\"'"
 
-yabai -m signal --add event=window_title_changed action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-titlebar-jsx\"'"
+# title-bar
+yabai -m signal \
+    --add event=application_front_switched \
+    action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-titlebar-jsx\"'"
+
+# title-bar
+yabai -m signal \
+    --add event=window_title_changed \
+    action="osascript -e 'tell application id \"tracesOf.Uebersicht\" to refresh widget id \"xbar-titlebar-jsx\"'"
 ```
